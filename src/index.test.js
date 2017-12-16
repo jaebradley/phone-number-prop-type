@@ -5,7 +5,6 @@ describe('Phone Number Prop Type', () => {
   const componentName = 'jaebaebae';
   const phoneNumber = '+1555555555';
   const invalidPhoneNumber = 'foobar';
-  const countryCode = 'US';
   const nonStringValue = 10;
 
 
