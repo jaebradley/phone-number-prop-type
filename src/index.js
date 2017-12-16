@@ -5,17 +5,12 @@ const phoneNumberUtil = libPhoneNumber.PhoneNumberUtil.getInstance();
 const requiredPhoneNumberPropType = (props, propName, componentName) => {
   const value = props[propName];
 
-  if (!value || !value.phoneNumber || !value.countryCode || typeof value.phoneNumber !== 'string' || typeof value.countryCode !== 'string') {
+  if (value == null || typeof value !== 'string') {
     return new TypeError(`Invalid Phone Number Prop Value: ${value} for ${propName} in ${componentName}`);
   }
 
-  const {
-    phoneNumber,
-    countryCode,
-  } = value;
-
   try {
-    phoneNumberUtil.parse(phoneNumber, countryCode);
+    phoneNumberUtil.parse(value);
   } catch (e) {
     return new TypeError(`Invalid Phone Number Prop Value: ${value} for ${propName} in ${componentName}`);
   }
