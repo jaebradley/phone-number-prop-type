@@ -50,6 +50,6 @@
     "semantic-release": "^8.2.0"
   },
   "dependencies": {
-    "phone": "^2.0.0-rc.1"
+    "google-libphonenumber": "^3.0.9"
   }
 }

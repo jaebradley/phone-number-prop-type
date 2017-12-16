@@ -1,42 +1,58 @@
-
-import phone from 'phone';
-
 import phoneNumberPropType from './index';
-
-jest.mock('phone', () => jest.fn());
 
 describe('Phone Number Prop Type', () => {
   const propName = 'baejadley';
   const componentName = 'jaebaebae';
-  const phoneNumber = 'blabblah';
-  const nonStringPhoneNumber = 10;
-  let mockedPhone;
+  const phoneNumber = '555555555';
+  const invalidPhoneNumber = 'foobar';
+  const countryCode = 'US';
+  const nonStringValue = 10;
 
-  afterEach(() => {
-    mockedPhone.mockRestore();
-  });
 
-  describe('urlPropType', () => {
-    it('should throw an error if prop value exists and is not a string', () => {
-      mockedPhone = phone.mockImplementation(() => []);
+  describe('phoneNumberPropType', () => {
+    it('should throw an error if phoneNumber value does not exist', () => {
       const props = {};
-      props[propName] = nonStringPhoneNumber;
+      const value = { countryCode };
+      props[propName] = value;
       expect(phoneNumberPropType(props, propName, componentName))
-        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${nonStringPhoneNumber} for ${propName} in ${componentName}`));
+        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${value} for ${propName} in ${componentName}`));
     });
 
-    it('should throw an error if prop value is not a valid phone number', () => {
-      mockedPhone = phone.mockImplementation(() => []);
+    it('should throw an error if countryCode value does not exist', () => {
       const props = {};
-      props[propName] = phoneNumber;
+      const value = { phoneNumber };
+      props[propName] = value;
       expect(phoneNumberPropType(props, propName, componentName))
-        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${phoneNumber} for ${propName} in ${componentName}`));
+        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${value} for ${propName} in ${componentName}`));
     });
 
-    it('should return successfully if prop value is a valid phone number', () => {
-      mockedPhone = phone.mockImplementation(() => [1]);
+    it('should throw an error if countryCode value exists and is not a string', () => {
       const props = {};
-      props[propName] = phoneNumber;
+      const value = { phoneNumber, countryCode: nonStringValue };
+      props[propName] = value;
+      expect(phoneNumberPropType(props, propName, componentName))
+        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${value} for ${propName} in ${componentName}`));
+    });
+
+    it('should throw an error if phoneNumber value exists and is not a string', () => {
+      const props = {};
+      const value = { phoneNumber: nonStringValue, countryCode };
+      props[propName] = value;
+      expect(phoneNumberPropType(props, propName, componentName))
+        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${value} for ${propName} in ${componentName}`));
+    });
+
+    it('should throw an error if phoneNumber value is an invalid string', () => {
+      const props = {};
+      const value = { phoneNumber: invalidPhoneNumber, countryCode };
+      props[propName] = value;
+      expect(phoneNumberPropType(props, propName, componentName))
+        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${value} for ${propName} in ${componentName}`));
+    });
+
+    it('should return null if prop value is a valid phone number', () => {
+      const props = {};
+      props[propName] = { phoneNumber, countryCode };
       expect(phoneNumberPropType(props, propName, componentName)).toBeNull();
     });
 
@@ -47,24 +63,55 @@ describe('Phone Number Prop Type', () => {
   });
 
   describe('validateRequiredPhoneNumber', () => {
-    it('should throw an error if prop value is not a valid phone number', () => {
-      mockedPhone = phone.mockImplementation(() => []);
+    it('should throw an error if phoneNumber value does not exist', () => {
       const props = {};
-      props[propName] = phoneNumber;
+      const value = { countryCode };
+      props[propName] = value;
       expect(phoneNumberPropType.isRequired(props, propName, componentName))
-        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${phoneNumber} for ${propName} in ${componentName}`));
+        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${value} for ${propName} in ${componentName}`));
+    });
+
+    it('should throw an error if countryCode value does not exist', () => {
+      const props = {};
+      const value = { phoneNumber };
+      props[propName] = value;
+      expect(phoneNumberPropType.isRequired(props, propName, componentName))
+        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${value} for ${propName} in ${componentName}`));
+    });
+
+    it('should throw an error if countryCode value exists and is not a string', () => {
+      const props = {};
+      const value = { phoneNumber, countryCode: nonStringValue };
+      props[propName] = value;
+      expect(phoneNumberPropType.isRequired(props, propName, componentName))
+        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${value} for ${propName} in ${componentName}`));
+    });
+
+    it('should throw an error if phoneNumber value exists and is not a string', () => {
+      const props = {};
+      const value = { phoneNumber: nonStringValue, countryCode };
+      props[propName] = value;
+      expect(phoneNumberPropType.isRequired(props, propName, componentName))
+        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${value} for ${propName} in ${componentName}`));
+    });
+
+    it('should throw an error if phoneNumber value is an invalid string', () => {
+      const props = {};
+      const value = { phoneNumber: invalidPhoneNumber, countryCode };
+      props[propName] = value;
+      expect(phoneNumberPropType.isRequired(props, propName, componentName))
+        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${value} for ${propName} in ${componentName}`));
     });
 
     it('should throw an error if prop is not defined', () => {
       const props = {};
       expect(phoneNumberPropType.isRequired(props, propName, componentName))
-        .toEqual(new TypeError(`Invalid Phone Number Prop Value: undefined for ${propName} in ${componentName}`));
+        .toEqual(new TypeError(`Invalid Phone Number Prop Value: ${undefined} for ${propName} in ${componentName}`));
     });
 
-    it('should succeed if prop value is a valid phone number', () => {
-      mockedPhone = phone.mockImplementation(() => [1]);
+    it('should return null if prop value is a valid phone number', () => {
       const props = {};
-      props[propName] = phoneNumber;
+      props[propName] = { phoneNumber, countryCode };
       expect(phoneNumberPropType.isRequired(props, propName, componentName)).toBeNull();
     });
   });
